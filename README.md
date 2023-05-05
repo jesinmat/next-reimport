@@ -1,5 +1,37 @@
 This is a [Next.js](https://nextjs.org/) template to use when reporting a [bug in the Next.js repository](https://github.com/vercel/next.js/issues).
 
+Issue encountered:
+
+One file is imported several times and is re-evaluated, while it should not be.
+This repository contains a minimal reproduction of the issue.
+
+## How to reproduce
+
+Build and run the project. Open the app in your browser. You should see the following:
+
+```
+Current ID: 1
+<Change ID>
+```
+
+In the server log, you will see that a cache has been created (by importing `lib/cache.ts`):
+
+```
+Creating a cache
+Loading data from database
+Returning data 1
+```
+
+Now, click on the "Change ID" button. You should see the following in the server log:
+
+```
+Creating a cache
+API request received
+Setting data to 2
+```
+
+Now refresh the page. Client will still see `1` as the ID as there are now two caches, since it was imported twice and evaluated upon each import. This should not happen.
+
 ## Getting Started
 
 These are the steps you should follow when creating a bug report:
